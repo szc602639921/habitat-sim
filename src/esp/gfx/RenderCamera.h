@@ -43,14 +43,57 @@ class RenderCamera : public MagnumCamera {
   typedef Corrade::Containers::EnumSet<Flag> Flags;
   CORRADE_ENUMSET_FRIEND_OPERATORS(Flags)
 
-  RenderCamera(scene::SceneNode& node);
+  /**
+   * @brief Constructor
+   * @param node, the scene node to which the camera is attached
+   */
+  explicit RenderCamera(scene::SceneNode& node);
+  /**
+   * @brief Constructor
+   * @param node, the scene node to which the camera is attached
+   * @param eye, the eye position (in PARENT node space)
+   * @param target, the target position (in PARENT node space)
+   * @param up, the up direction (in PARENT node space)
+   * NOTE: it will override any relative transformation w.r.t its parent node
+   */
   RenderCamera(scene::SceneNode& node,
                const vec3f& eye,
                const vec3f& target,
                const vec3f& up);
-  virtual ~RenderCamera() {
-    // do nothing, let magnum handle the camera
-  }
+  /**
+   * @brief Constructor
+   * @param node, the scene node to which the camera is attached
+   * @param eye, the eye position (in PARENT node space)
+   * @param target, the target position (in PARENT node space)
+   * @param up, the up direction (in PARENT node space)
+   * NOTE: it will override any relative transformation w.r.t its parent node
+   */
+  RenderCamera(scene::SceneNode& node,
+               const Magnum::Vector3& eye,
+               const Magnum::Vector3& target,
+               const Magnum::Vector3& up);
+  /**
+   * @brief Reset the initial viewing parameters of the camera
+   * @param eye, the eye position (in PARENT node space)
+   * @param target, the target position (in PARENT node space)
+   * @param up, the up direction (in PARENT node space)
+   * @return Reference to self (for method chaining)
+   * NOTE: it will override any relative transformation w.r.t its parent node
+   */
+  virtual RenderCamera& resetViewingParameters(const Magnum::Vector3& eye,
+                                               const Magnum::Vector3& target,
+                                               const Magnum::Vector3& up);
+  /**
+   * @brief Tell if the camera is attached to the scene graph
+   * @return true if it is attached to this scene graph, otherwise false
+   */
+  bool isInSceneGraph(const scene::SceneGraph& sceneGraph);
+
+  /**
+   * @brief destructor
+   * do nothing, let magnum handle the camera
+   */
+  ~RenderCamera() override = default;
 
   // Get the scene node being attached to.
   scene::SceneNode& node() { return object(); }
@@ -157,7 +200,7 @@ class RenderCamera : public MagnumCamera {
    * @brief Query the cached number of Drawables visible after frustum culling
    * for the most recent render pass.
    */
-  size_t getPreviousNumVisibileDrawables() const {
+  size_t getPreviousNumVisibleDrawables() const {
     return previousNumVisibleDrawables_;
   }
 

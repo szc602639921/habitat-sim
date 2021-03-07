@@ -151,6 +151,11 @@ void initGfxBindings(py::module& m) {
       .value("GLOBAL", LightPositionModel::GLOBAL)
       .value("OBJECT", LightPositionModel::OBJECT);
 
+  py::enum_<LightType>(
+      m, "LightType", R"(Defines the type of light described by the LightInfo)")
+      .value("Point", LightType::Point)
+      .value("Directional", LightType::Directional);
+
   py::class_<LightInfo>(
       m, "LightInfo",
       R"(Defines the vector, color and LightPositionModel of a single light source.
@@ -166,9 +171,8 @@ void initGfxBindings(py::module& m) {
       .def(py::self == py::self)
       .def(py::self != py::self);
 
-  m.attr("DEFAULT_LIGHTING_KEY") =
-      assets::ResourceManager::DEFAULT_LIGHTING_KEY;
-  m.attr("NO_LIGHT_KEY") = assets::ResourceManager::NO_LIGHT_KEY;
+  m.attr("DEFAULT_LIGHTING_KEY") = DEFAULT_LIGHTING_KEY;
+  m.attr("NO_LIGHT_KEY") = NO_LIGHT_KEY;
 }
 
 }  // namespace gfx
