@@ -5,7 +5,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 option(BUILD_WITH_CUDA "Build Habitat-Sim with CUDA features enabled -- Requires CUDA" OFF)
-
+set(CMAKE_CUDA_COMPILER "/usr/local/cuda-10.0/bin/nvcc")
 if(BUILD_WITH_CUDA)
   project(esp LANGUAGES C CXX CUDA)
   find_library(CUDART_LIBRARY cudart ${CMAKE_CUDA_IMPLICIT_LINK_DIRECTORIES})
